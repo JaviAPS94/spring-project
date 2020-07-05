@@ -53,4 +53,14 @@ public class ContactServiceImpl implements ContactService {
 
         return contactRepository.save(contact);
     }
+
+    @Override
+    public Contact getContactById(Long id) throws NotFoundException {
+        Optional<Contact> contact = contactRepository.findById(id);
+        if (contact.isPresent()) {
+            return contact.get();
+        } else {
+            throw new NotFoundException("Contact cannot be found");
+        }
+    }
 }

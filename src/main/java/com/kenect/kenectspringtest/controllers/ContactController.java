@@ -6,10 +6,7 @@ import com.kenect.kenectspringtest.utils.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -24,6 +21,15 @@ public class ContactController {
     public ResponseEntity create(@Valid @RequestBody ContactDto contact) {
         try {
             return ResponseEntity.ok(this.contactService.save(contact));
+        } catch (NotFoundException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity getById(@PathVariable Long id) {
+        try {
+            return ResponseEntity.ok(this.contactService.getContactById(id));
         } catch (NotFoundException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }

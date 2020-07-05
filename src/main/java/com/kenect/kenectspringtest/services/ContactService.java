@@ -6,4 +6,5 @@ import com.kenect.kenectspringtest.utils.NotFoundException;
 
 public interface ContactService {
     Contact save(ContactDto newContact) throws NotFoundException;
+    Contact getContactById(Long id) throws NotFoundException;
 }

@@ -13,13 +13,17 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.hamcrest.Matchers.is;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
@@ -35,7 +39,23 @@ public class KenectSpringTest1ApplicationTests {
 	ObjectMapper objectmapper;
 
 	@Test
-	public void testAddGermany() throws Exception {
+	@Sql("/dataTest.sql")
+	public void testGetContact() throws Exception {
+		String response = mockMvc.perform(get("/contact" + "/{id}", 1))
+				.andExpect(status().is(HttpStatus.OK.value()))
+				.andExpect(jsonPath("$.name", is("Test")))
+				.andExpect(jsonPath("$.phones[0].number", is("0958963597")))
+				.andExpect(jsonPath("$.emails[0].email", is("test@test.com")))
+				.andExpect(jsonPath("$.addresses[0].street", is("test")))
+				.andReturn()
+				.getResponse()
+				.getContentAsString();
+
+		logger.info("response: " + response);
+	}
+
+	@Test
+	public void testAddContact() throws Exception {
 		ContactDto contact = new ContactDto();
 		List<String> phones = new ArrayList<>();
 		List<String> emails = new ArrayList<>();
@@ -73,5 +93,4 @@ public class KenectSpringTest1ApplicationTests {
 
 		logger.info(response);
 	}
-
 }
