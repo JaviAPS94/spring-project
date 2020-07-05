@@ -63,4 +63,14 @@ public class ContactServiceImpl implements ContactService {
             throw new NotFoundException("Contact cannot be found");
         }
     }
+
+    @Override
+    public void deleteContactById(Long id) throws NotFoundException{
+        Optional<Contact> contact = contactRepository.findById(id);
+        if (contact.isPresent()) {
+            contactRepository.deleteById(id);
+        } else {
+            throw new NotFoundException("Contact cannot be found");
+        }
+    }
 }

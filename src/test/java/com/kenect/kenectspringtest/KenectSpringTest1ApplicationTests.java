@@ -21,8 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.hamcrest.Matchers.is;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -88,6 +87,17 @@ public class KenectSpringTest1ApplicationTests {
 				.perform(post("/contact")
 						.content(objectmapper.writeValueAsString(contact))
 						.contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().is(HttpStatus.OK.value())).andReturn().getResponse()
+				.getContentAsString();
+
+		logger.info(response);
+	}
+
+	@Test
+	@Sql("/dataTest.sql")
+	public void testDeleteContact() throws Exception {
+		String response = mockMvc
+				.perform(delete("/contact" + "/{id}", 1))
 				.andExpect(status().is(HttpStatus.OK.value())).andReturn().getResponse()
 				.getContentAsString();
 
