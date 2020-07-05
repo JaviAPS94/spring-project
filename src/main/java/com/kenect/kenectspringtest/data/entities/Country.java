@@ -26,35 +26,4 @@ public class Country {
     @JsonIgnore
     @UpdateTimestamp
     private Date updatedAt;
-
-    @OneToMany(mappedBy = "contact",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true)
-    private List<Phone> phones = new ArrayList<>();
-
-    @OneToMany(mappedBy = "contact",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true)
-    private List<Email> emails = new ArrayList<>();
-
-    @OneToMany(mappedBy = "contact",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true)
-    private List<Address> addresses = new ArrayList<>();
-
-    public void addPhone(Phone phone) {
-        phones.add(phone);
-        phone.setContact(this);
-    }
-
-    public void addEmail(Email email) {
-        emails.add(email);
-        email.setContact(this);
-    }
-
-    public void addAddress(Address address) {
-        addresses.add(address);
-        address.setContact(this);
-    }
-
 }

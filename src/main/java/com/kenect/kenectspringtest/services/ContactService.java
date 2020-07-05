@@ -1,4 +1,9 @@
 package com.kenect.kenectspringtest.services;
 
-public class ContactService {
+import com.kenect.kenectspringtest.data.dto.ContactDto;
+import com.kenect.kenectspringtest.data.entities.Contact;
+import com.kenect.kenectspringtest.utils.NotFoundException;
+
+public interface ContactService {
+    Contact save(ContactDto newContact) throws NotFoundException;
 }
